@@ -44,7 +44,7 @@ const GRADE_POINTS: Record<string, number> = {
 const GRADES: string[] = ["A", "B", "C", "D", "E", "F"];
 
 const calcCgpa = (
-  grades: { grade: string; credits: number; code: string; title: string }[]
+  grades: { grade: string; credits: number; code: string; title: string }[],
 ) => {
   let totalPoints = 0,
     totalCredits = 0;
@@ -80,6 +80,7 @@ const Calculator = () => {
   >({});
   const [grades, setGrades] = useState<Record<string, string>>({});
   const [results, setResults] = useState<FinalResults | null>(null);
+  const [stepError, setStepError] = useState<string | null>(null);
 
   const department = DEPARTMENTS.find((d) => d.id === selectedId);
 
@@ -151,10 +152,14 @@ const Calculator = () => {
 
   const allCoursesGraded = () => {
     const sessions = getActiveSessions();
-    return sessions?.every(({ courses }) => {
-      courses.every((c) => grades[c.code]);
-    });
+    if (!sessions || sessions.length === 0) return false;
+
+    return sessions.every(({ courses }) =>
+      courses.every((c) => !!grades[c.code]),
+    );
   };
+
+  const isComplete = allCoursesGraded();
 
   const calculate = () => {
     const sessions = getActiveSessions();
@@ -175,13 +180,36 @@ const Calculator = () => {
 
     const cgpa = calcCgpa(allGrades);
     setResults({ semesterResults, cgpa, cls: getClass(cgpa) });
-    setStep(4);
+    setStep((p) => p + 1);
 
     console.log("all grades:", allGrades);
   };
 
+  const toStep2 = () => {
+    if (!selectedId) {
+      setStepError("Please select a department to continue");
+      return;
+    }
+
+    setStepError(null);
+    setStep(2);
+  }
+
+  const toStep3 = () => {
+    const hasSelectedLevels = Object.keys(selectedLevels).length > 0;
+    const hasSelectedSemesters = Object.values(selectedSemesters).some(s => s.length > 0);
+
+    if (!hasSelectedLevels || !hasSelectedSemesters) {
+      setStepError("Please select at least one level and semester to continue");
+      return;
+    }
+
+    setStepError(null);
+    setStep(3)
+  }
+
   return (
-    <div className="relative flex flex-col justify-center items-center min-h-screen bg-[#080a08]">
+    <div className="relative flex flex-col justify-center items-center min-h-screen pt-20 pb-10 bg-[#080a08]">
       <div className="p-8 bg-card border border-white/10 rounded-3xl">
         {step === 1 && (
           <div>
@@ -203,7 +231,7 @@ const Calculator = () => {
                   } ${
                     selectedId === d.id ? "border-[#e8ff47]" : "border-white/10"
                   } hover:bg-card/60 border hover:cursor-pointer rounded-2xl transition-all`}
-                  onClick={() => setSelectedId(d.id)}
+                  onClick={() => {setSelectedId(d.id); setStepError(null)}}
                 >
                   {d.id === "dts" ? (
                     <BarChart3 className="size-6 text-accent" />
@@ -228,10 +256,16 @@ const Calculator = () => {
 
             <button
               className="w-full border-0 py-3 mt-8 rounded-xl bg-[#e8ff47] hover:bg-[#e8ff47]/80 hover:cursor-pointer text-black transition-all"
-              onClick={() => setStep(2)}
+              onClick={toStep2}
             >
               Continue
             </button>
+
+            {stepError && (
+              <p className="text-xs text-center mt-4 text-white/50">
+                {stepError}
+              </p>
+            )}
           </div>
         )}
 
@@ -278,9 +312,10 @@ const Calculator = () => {
                                   ? "bg-[#e8ff47] text-black/80 font-semibold"
                                   : "bg-white/5 hover:bg-white/10 text-white/50"
                               } border border-white/10 hover:cursor-pointer transition-all`}
-                              onClick={() =>
-                                toggleSemester(lvl.level, sem.name)
-                              }
+                              onClick={() => {
+                                toggleSemester(lvl.level, sem.name);
+                                setStepError(null);
+                              }}
                             >
                               {sem.name}
                             </button>
@@ -296,19 +331,25 @@ const Calculator = () => {
             <div className="flex gap-2 items-center">
               <button
                 className="w-full flex justify-center gap-1 items-center max-w-1/4 py-3 mt-8 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 hover:cursor-pointer text-white/50 transition-all"
-                onClick={() => setStep((prev) => prev - 1)}
+                onClick={() => setStep((p) => p - 1)}
               >
                 <ChevronLeft className="size-4 -ml-2" />
                 Back
               </button>
               <button
                 className="w-full flex justify-center gap-1 items-center border-0 py-3 mt-8 rounded-xl bg-[#e8ff47] hover:bg-[#e8ff47]/80 hover:cursor-pointer text-black transition-all"
-                onClick={() => setStep((prev) => prev + 1)}
+                onClick={toStep3}
               >
                 Enter grades
-                <ArrowRight className="size-4 " />
+                <ArrowRight className="size-4" />
               </button>
             </div>
+
+            {stepError && (
+              <p className="text-xs text-center mt-4 text-white/50">
+                {stepError}
+              </p>
+            )}
           </div>
         )}
 
@@ -382,75 +423,113 @@ const Calculator = () => {
               <button
                 className="w-full flex justify-center gap-1 items-center border-0 py-3 mt-8 rounded-xl bg-[#e8ff47] hover:bg-[#e8ff47]/80 hover:cursor-pointer text-black transition-all"
                 onClick={calculate}
-                disabled={!allCoursesGraded()}
+                disabled={!isComplete}
               >
                 Calculate CGPA
                 <ArrowRight className="size-4 " />
               </button>
             </div>
 
-            {!allCoursesGraded && (
-              <p className="text-center mt-4 text-white/50">
+            {!isComplete && (
+              <p className="text-sm text-center mt-4 text-white/50">
                 Grade all courses to continue
               </p>
             )}
           </div>
         )}
 
-        {step === 4 && (
-          <div>
-            <p className="text-xs text-accent">RESULTS</p>
-
-            <div className="w-full flex justify-center items-center ">
-              <div
-                className={`w-20 h-20 flex flex-col justify-center items-center rounded-full ring-2 ring-[${results?.cls.color}]`}
-              >
-                <p>CGPA</p>
-                <h1>{results?.cgpa.toFixed(2)}</h1>
-                <p>out of 5.00</p>
-              </div>
-
-              <div
-                className={`px-2 py-4 rounded-full bg-[${results?.cls.bg}] border border-[${results?.cls.bg}]`}
-              >
-                {results?.cls.label}
-              </div>
-            </div>
-
-
-            <p>SEMESTER BREAKDOWN</p>
-
-            <div className="flex flex-col gap-2">
-              {results?.semesterResults.map(({ lvl, semName, gpa, courses }) => {
-                const cls = getClass(gpa);
-
-                 return (
-                  <div key={`${lvl}-${semName}`} className="w-full flex justify-between px-4 py-6 bg-white/5 border-white/10 rounded-xl">
-                    <div>
-                      <p className="text-md text-white/80">{lvl} - {semName}</p>
-
-                    </div>
-                    
-                  </div>
-                 )
-              })}
-            </div>
-
-            <div className="flex gap-2 items-center">
-              <button
-                className="w-full flex justify-center gap-1 items-center border-0 py-3 mt-8 rounded-xl bg-[#e8ff47] hover:bg-[#e8ff47]/80 hover:cursor-pointer text-black transition-all"
-                onClick={() => console.log("start over btn clicked")}
-              >
-                Start over
-                <RefreshCcw className="size-4 " />
-              </button>
-            </div>
-
-            {!allCoursesGraded && (
-              <p className="text-center mt-4 text-white/50">
-                Grade all courses to continue
+        {step === 4 && results && (
+          <div className="w-full max-w-2xl mx-auto space-y-10">
+            {/* Header */}
+            <div className="text-center space-y-2">
+              <p className="text-xs text-accent tracking-widest">RESULTS</p>
+              <h1 className="text-3xl font-semibold text-white">
+                Your CGPA Summary
+              </h1>
+              <p className="text-white/50 text-sm">
+                Here's a breakdown of your academic performance
               </p>
-            )}
+            </div>
+
+            {/* CGPA Card */}
+            <div className="bg-white/5 border border-white/10 rounded-3xl p-8 flex flex-col items-center space-y-6">
+              <div
+                className="w-36 h-36 flex flex-col justify-center items-center rounded-full border-4"
+                style={{ borderColor: results.cls.color }}
+              >
+                <p className="text-xs text-white/50 uppercase">CGPA</p>
+                <h1 className="text-4xl font-bold text-white">
+                  {results.cgpa.toFixed(2)}
+                </h1>
+                <p className="text-xs text-white/50">out of 5.00</p>
+              </div>
+
+              <div
+                className="px-6 py-2 rounded-full text-sm font-semibold"
+                style={{
+                  backgroundColor: results.cls.bg,
+                  color: results.cls.color,
+                  border: `1px solid ${results.cls.color}`,
+                }}
+              >
+                {results.cls.label}
+              </div>
+            </div>
+
+            {/* Semester Breakdown */}
+            <div className="space-y-4">
+              <h2 className="text-white text-lg font-semibold">
+                Semester Breakdown
+              </h2>
+
+              <div className="space-y-3">
+                {results.semesterResults.map(({ lvl, semName, gpa }) => {
+                  const cls = getClass(gpa);
+
+                  return (
+                    <div
+                      key={`${lvl}-${semName}`}
+                      className="bg-white/5 border border-white/10 rounded-2xl p-5 flex justify-between items-center hover:bg-white/10 transition-all"
+                    >
+                      <div>
+                        <p className="text-white font-medium">
+                          {lvl}L — {semName}
+                        </p>
+                        <p className="text-xs text-white/50">GPA Performance</p>
+                      </div>
+
+                      <div className="text-right">
+                        <p className="text-xl font-semibold text-white">
+                          {gpa.toFixed(2)}
+                        </p>
+                        <p
+                          className="text-xs font-medium"
+                          style={{ color: cls.color }}
+                        >
+                          {cls.label}
+                        </p>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Start Over Button */}
+            <button
+              className="w-full flex justify-center gap-2 items-center py-4 rounded-2xl bg-[#e8ff47] hover:bg-[#e8ff47]/80 text-black font-semibold transition-all"
+              onClick={() => {
+                setStep(1);
+                setSelectedId(null);
+                setSelectedLevels({});
+                setSelectedSemesters({});
+                setGrades({});
+                setResults(null);
+              }}
+            >
+              Start Over
+              <RefreshCcw className="size-4" />
+            </button>
           </div>
         )}
       </div>
