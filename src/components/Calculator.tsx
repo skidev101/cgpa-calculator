@@ -2,6 +2,7 @@ import {
   ArrowRight,
   BarChart3,
   ChevronLeft,
+  ChevronRight,
   Code,
   Lightbulb,
   RefreshCcw,
@@ -209,24 +210,24 @@ const Calculator = () => {
   }
 
   return (
-    <div className="relative flex flex-col justify-center items-center min-h-screen pt-20 pb-10 bg-[#080a08]">
-      <div className="p-8 bg-card border border-white/10 rounded-3xl">
+    <div className="relative flex flex-col justify-center items-center min-h-screen pt-20 pb-10 px-4 bg-[#080a08]">
+      <div className="w-full max-w-2xl px-6 py-8 sm:p-8 bg-card border border-white/10 rounded-3xl">
         {step === 1 && (
           <div>
-            <p className="text-xs text-accent">STEP 01</p>
+            <p className="text-[11px] sm:text-xs text-accent">STEP 01</p>
 
-            <h1 className="text-3xl mt-2">
+            <h1 className="text-2xl sm:text-3xl mt-2">
               Select your <br /> <em>Department</em>
             </h1>
-            <p className="text-white/50 mt-2">
+            <p className="text-sm text-white/50 mt-2">
               Choose your registered department
             </p>
 
-            <div className="flex gap-4 mt-6">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-6">
               {DEPARTMENTS.map((d: Department) => (
                 <button
                   key={d.id}
-                  className={`flex flex-col justify-center items-center text-center px-4 py-6 w-full max-w-40 ${
+                  className={`flex flex-col justify-center items-center text-center px-4 py-6 w-full sm:max-w-60 ${
                     selectedId === d.id ? "bg-accent-alpha" : "bg-card"
                   } ${
                     selectedId === d.id ? "border-[#e8ff47]" : "border-white/10"
@@ -255,7 +256,7 @@ const Calculator = () => {
             </div>
 
             <button
-              className="w-full border-0 py-3 mt-8 rounded-xl bg-[#e8ff47] hover:bg-[#e8ff47]/80 hover:cursor-pointer text-black transition-all"
+              className="w-full border-0 py-3 mt-8 text-sm sm:text-base rounded-xl bg-[#e8ff47] hover:bg-[#e8ff47]/80 hover:cursor-pointer text-black transition-all"
               onClick={toStep2}
             >
               Continue
@@ -271,12 +272,12 @@ const Calculator = () => {
 
         {step === 2 && (
           <div>
-            <p className="text-xs text-accent">STEP 02</p>
+            <p className="text-[11px] text-xs text-accent">STEP 02</p>
 
-            <h1 className="text-3xl mt-2">
+            <h1 className="text-2xl sm:text-3xl mt-2">
               Levels & <br /> <em>Semesters</em>
             </h1>
-            <p className="text-white/50 mt-2">
+            <p className="text-[12px] sm:text-sm text-white/50 mt-2">
               Select the levels and semester you want included in your CGPA
             </p>
 
@@ -290,11 +291,11 @@ const Calculator = () => {
                         selectedLevels[lvl.level]
                           ? "border-[#e8ff47] text-[#e8ff47]"
                           : "border-white/10 text-white/50"
-                      } px-4 py-2 rounded-xl bg-white/5 hover:bg-white/10 border hover:cursor-pointer transition-all`}
+                      } px-2 sm:px-4 py-2 rounded-xl bg-white/5 hover:bg-white/10 border hover:cursor-pointer transition-all`}
                       onClick={() => toggleLevel(lvl.level)}
                     >
-                      <span>{lvl.level}L</span>
-                      <span>{selectedLevels[lvl.level] ? "✓" : "+"}</span>
+                      <span className="text-xs sm:text-sm">{lvl.level}L</span>
+                      <span className="text-xs sm:text-sm">{selectedLevels[lvl.level] ? "✓" : "+"}</span>
                     </button>
 
                     {selectedLevels[lvl.level] && (
@@ -307,7 +308,7 @@ const Calculator = () => {
                           return (
                             <button
                               key={sem.name}
-                              className={`w-full max-w-max flex justify-center gap-1 items-center px-6 py-2 rounded-xl ${
+                              className={`w-full max-w-max flex justify-center gap-1 items-center px-4 sm:px-6 py-2 rounded-xl ${
                                 active
                                   ? "bg-[#e8ff47] text-black/80 font-semibold"
                                   : "bg-white/5 hover:bg-white/10 text-white/50"
@@ -317,7 +318,7 @@ const Calculator = () => {
                                 setStepError(null);
                               }}
                             >
-                              {sem.name}
+                              <span className="text-xs sm:text-sm">{sem.name}</span>
                             </button>
                           );
                         })}
@@ -330,18 +331,18 @@ const Calculator = () => {
 
             <div className="flex gap-2 items-center">
               <button
-                className="w-full flex justify-center gap-1 items-center max-w-1/4 py-3 mt-8 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 hover:cursor-pointer text-white/50 transition-all"
+                className="w-full flex justify-center gap-1 items-center max-w-1/4 px-3 py-2 sm:py-3 mt-8 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 hover:cursor-pointer text-white/50 transition-all"
                 onClick={() => setStep((p) => p - 1)}
               >
-                <ChevronLeft className="size-4 -ml-2" />
-                Back
+                <ChevronLeft className="size-4 -ml-2 shrink-0" />
+                <span className="text-sm">Back</span>
               </button>
               <button
-                className="w-full flex justify-center gap-1 items-center border-0 py-3 mt-8 rounded-xl bg-[#e8ff47] hover:bg-[#e8ff47]/80 hover:cursor-pointer text-black transition-all"
+                className="w-full flex justify-center gap-1 items-center border-0 py-2 sm:py-3 mt-8 rounded-xl bg-[#e8ff47] hover:bg-[#e8ff47]/80 hover:cursor-pointer text-black transition-all"
                 onClick={toStep3}
               >
-                Enter grades
-                <ArrowRight className="size-4" />
+                <span className="text-sm">Enter grades</span>
+                <ChevronRight className="size-4" />
               </button>
             </div>
 
@@ -357,10 +358,10 @@ const Calculator = () => {
           <div>
             <p className="text-xs text-accent">STEP 03</p>
 
-            <h1 className="text-3xl mt-2">
+            <h1 className="text-2xl sm:text-3xl mt-2">
               Enter your <br /> <em>Grades</em>
             </h1>
-            <p className="text-white/50 mt-2">
+            <p className="text-xs sm:text-sm text-white/50 mt-2">
               Select your grade for each course.
               <br /> A=5, B=4, C=3, D=2, E=1, F=0
             </p>
@@ -376,31 +377,32 @@ const Calculator = () => {
                     {courses.map((course) => (
                       <div
                         key={course.code}
-                        className="w-full flex justify-between px-4 py-6 bg-white/5 border-white/10 rounded-xl"
+                        className="w-full flex flex-col sm:justify-between sm:px-4 py-4 sm:py-6 bg-white/5 border-white/10 rounded-xl"
                       >
-                        <div className="w-full flex justify-between items-center gap-4">
+                        <div className="w-full flex flex-col px-4 sm:px-2 sm:flex-row sm:justify-between sm:items-center">
+                          
                           <div className="flex flex-col">
-                            <p className="text-[#e8ff47] uppercase font-semibold text-sm">
+                            <p className="text-xs sm:text-sm text-[#e8ff47] uppercase font-semibold">
                               {course.code}
                             </p>
-                            <h1 className="text-white/90">{course.title}</h1>
-                            <p className="text-xs text-white/50">
+                            <h1 className="text-sm text-white/90">{course.title}</h1>
+                            <p className="text-[11px] text-white/50">
                               {course.credits} units
                             </p>
                           </div>
 
-                          <div className="flex items-center gap-2 px-4">
+                          <div className="flex items-center gap-1 sm:gap-2 sm:px-4 mt-3 sm:mt-0">
                             {GRADES.map((grade) => (
                               <button
                                 key={grade}
-                                className={`w-10 h-10  ${
+                                className={`w-8 h-8 sm:w-10 sm:h-10  ${
                                   grades[course.code] === grade
                                     ? "bg-[#e8ff47] text-black font-semibold"
                                     : "text-white/50 bg-white/10 hover:bg-white/20 hover:text-[#e8ff47]"
                                 } rounded-xl hover:cursor-pointer transition-all`}
                                 onClick={() => setGrade(course.code, grade)}
                               >
-                                {grade}
+                                <span className="text-sm">{grade}</span>
                               </button>
                             ))}
                           </div>
@@ -414,24 +416,24 @@ const Calculator = () => {
 
             <div className="flex gap-2 items-center">
               <button
-                className="w-full flex justify-center gap-1 items-center max-w-1/4 py-3 mt-8 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 hover:cursor-pointer text-white/50 transition-all"
+                className="w-full flex justify-center gap-1 items-center max-w-1/4 px-3 py-2 sm:py-3 mt-8 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 hover:cursor-pointer text-white/50 transition-all"
                 onClick={() => setStep((prev) => prev - 1)}
               >
                 <ChevronLeft className="size-4 -ml-2" />
-                Back
+                <span className="text-sm">Back</span>
               </button>
               <button
-                className="w-full flex justify-center gap-1 items-center border-0 py-3 mt-8 rounded-xl bg-[#e8ff47] hover:bg-[#e8ff47]/80 hover:cursor-pointer text-black transition-all"
+                className="w-full flex justify-center gap-1 items-center border-0 py-2 sm:py-3 mt-8 rounded-xl bg-[#e8ff47] hover:bg-[#e8ff47]/80 hover:cursor-pointer text-black transition-all"
                 onClick={calculate}
                 disabled={!isComplete}
               >
-                Calculate CGPA
-                <ArrowRight className="size-4 " />
+                <span className="text-sm">Calculate CGPA</span>
+                <ChevronRight className="size-4 " />
               </button>
             </div>
 
             {!isComplete && (
-              <p className="text-sm text-center mt-4 text-white/50">
+              <p className="text-xs text-center mt-4 text-white/50">
                 Grade all courses to continue
               </p>
             )}
@@ -465,7 +467,7 @@ const Calculator = () => {
               </div>
 
               <div
-                className="px-6 py-2 rounded-full text-sm font-semibold"
+                className="px-4 sm:px-6 py-2 rounded-full text-sm font-semibold"
                 style={{
                   backgroundColor: results.cls.bg,
                   color: results.cls.color,
@@ -492,10 +494,10 @@ const Calculator = () => {
                       className="bg-white/5 border border-white/10 rounded-2xl p-5 flex justify-between items-center hover:bg-white/10 transition-all"
                     >
                       <div>
-                        <p className="text-white font-medium">
+                        <p className="text-sm text-white font-medium">
                           {lvl}L — {semName}
                         </p>
-                        <p className="text-xs text-white/50">GPA Performance</p>
+                        <p className="text-xs text-white/50 mt-1">GPA Performance</p>
                       </div>
 
                       <div className="text-right">
@@ -503,7 +505,7 @@ const Calculator = () => {
                           {gpa.toFixed(2)}
                         </p>
                         <p
-                          className="text-xs font-medium"
+                          className="text-xs font-medium mt-1"
                           style={{ color: cls.color }}
                         >
                           {cls.label}
