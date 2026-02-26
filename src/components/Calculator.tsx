@@ -519,7 +519,7 @@ const Calculator = () => {
 
             {/* Start Over Button */}
             <button
-              className="w-full flex justify-center gap-2 items-center py-4 rounded-2xl bg-[#e8ff47] hover:bg-[#e8ff47]/80 text-black font-semibold transition-all"
+              className="w-full flex justify-center gap-2 items-center py-4 rounded-2xl bg-[#e8ff47] hover:bg-[#e8ff47]/80 text-black font-semibold hover:cursor-pointer transition-all"
               onClick={() => {
                 setStep(1);
                 setSelectedId(null);
