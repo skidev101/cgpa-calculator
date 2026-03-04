@@ -1,73 +1,88 @@
-# React + TypeScript + Vite
+# CGPAcalc: Comprehensive Grade Point Average Calculator 📊
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Overview
+CGPAcalc is a sleek and intuitive web application built with **React** and **TypeScript** that simplifies the process of calculating your Cumulative Grade Point Average (CGPA) and semester GPAs. Designed for students, it offers a multi-step workflow to easily input grades and visualize academic performance.
 
-Currently, two official plugins are available:
+## Features
+-   **Intuitive Multi-Step Workflow**: Guides users seamlessly through department, level, and semester selection.
+-   **Dynamic Grade Input**: Provides an easy-to-use interface for entering grades (A, B, C, D, E, F) for individual courses across selected semesters.
+-   **Accurate CGPA Calculation**: Precisely computes both overall Cumulative Grade Point Average and individual semester GPAs based on standard grading scales.
+-   **Academic Class Classification**: Automatically assigns academic classifications such as First Class, Second Class Upper, Second Class Lower, Third Class, or Pass based on the calculated CGPA.
+-   **Responsive User Interface**: Crafted with **Tailwind CSS** to ensure a beautiful and functional experience across all devices, from desktops to mobile phones.
+-   **Modular Component Design**: Utilizes React's component-based architecture for enhanced maintainability, scalability, and reusability of UI elements.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Getting Started
 
-## React Compiler
+### Installation
+To get a local copy up and running, follow these simple steps.
 
-The React Compiler is currently not compatible with SWC. See [this issue](https://github.com/vitejs/vite-plugin-react/issues/428) for tracking the progress.
+1.  **Clone the Repository**:
+    ```bash
+    git clone https://github.com/skidev101/cgpa-calculator.git
+    ```
+2.  **Navigate to Project Directory**:
+    ```bash
+    cd cgpa-calculator
+    ```
+3.  **Install Dependencies**:
+    ```bash
+    npm install # Or use yarn install if you prefer yarn
+    ```
 
-## Expanding the ESLint configuration
+### Usage
+Once the project is set up, you can start the development server and interact with the CGPA calculator.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+1.  **Start the Development Server**:
+    ```bash
+    npm run dev # Or yarn dev
+    ```
+    This will launch the application, typically accessible at `http://localhost:5173/`.
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+2.  **Select Your Department**:
+    On the first step, choose your academic department from the provided list. This helps tailor the course structure for subsequent steps.
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+3.  **Choose Levels & Semesters**:
+    Proceed to the second step to select the specific academic levels (e.g., 100L, 200L) and semesters (First, Second) you wish to include in your CGPA calculation.
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+4.  **Enter Your Grades**:
+    In the third step, you will see a list of courses from your selected levels and semesters. For each course, select your corresponding grade (A, B, C, D, E, F) using the interactive buttons. The application follows a standard 5-point grading scale (A=5, B=4, C=3, D=2, E=1, F=0).
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+5.  **Calculate CGPA**:
+    After entering all your grades, click the "Calculate CGPA" button. The application will then display your comprehensive results.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+6.  **Review Your Results**:
+    The final step presents a summary of your academic performance, including your overall CGPA, the academic class you fall into (e.g., First Class, Second Class Upper), and a detailed breakdown of your GPA for each selected semester. You can click "Start Over" to perform a new calculation.
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+## Technologies Used
+
+| Technology       | Description                                              |
+| :--------------- | :------------------------------------------------------- |
+| ![React](https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=react&logoColor=white)         | A JavaScript library for building user interfaces.       |
+| ![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white) | A typed superset of JavaScript that compiles to plain JavaScript. |
+| ![Vite](https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white)           | Next Generation Frontend Tooling.                        |
+| ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-06B6D4?style=for-the-badge&logo=tailwind-css&logoColor=white) | A utility-first CSS framework for rapid UI development.  |
+| Lucide React     | A beautiful and simply designed icon library for React.  |
+| ![ESLint](https://img.shields.io/badge/ESLint-4B32C3?style=for-the-badge&logo=eslint&logoColor=white)         | Pluggable JavaScript linter.                             |
+
+## Contributing
+Contributions are what make the open-source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
+
+To contribute:
+*   🍴 Fork the repository to your GitHub account.
+*   🌿 Create a new branch for your feature or bugfix: `git checkout -b feature/AmazingFeature`.
+*   💻 Make your changes and ensure they adhere to the project's coding standards.
+*   ✅ Commit your changes with a clear and descriptive message: `git commit -m 'feat: Add amazing new feature'`.
+*   🚀 Push your branch to your forked repository: `git push origin feature/AmazingFeature`.
+*   📥 Open a Pull Request from your branch to the `main` branch of this repository, describing your changes.
+
+## Author
+**skidev101**
+
+*   **X (Twitter)**: [Your X Profile](https://x.com/monaski_)
+
+---
+
+[![Build Status](https://img.shields.io/badge/build-passing-brightgreen)](https://github.com/skidev101/cgpa-calculator/actions)
+[![GitHub stars](https://img.shields.io/github/stars/skidev101/cgpa-calculator?style=social)](https://github.com/skidev101/cgpa-calculator/stargazers)
+[![GitHub forks](https://img.shields.io/github/forks/skidev101/cgpa-calculator?style=social)](https://github.com/skidev101/cgpa-calculator/network/members)
+
