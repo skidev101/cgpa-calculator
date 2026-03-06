@@ -194,11 +194,13 @@ const Calculator = () => {
 
     setStepError(null);
     setStep(2);
-  }
+  };
 
   const toStep3 = () => {
     const hasSelectedLevels = Object.keys(selectedLevels).length > 0;
-    const hasSelectedSemesters = Object.values(selectedSemesters).some(s => s.length > 0);
+    const hasSelectedSemesters = Object.values(selectedSemesters).some(
+      (s) => s.length > 0,
+    );
 
     if (!hasSelectedLevels || !hasSelectedSemesters) {
       setStepError("Please select at least one level and semester to continue");
@@ -206,8 +208,8 @@ const Calculator = () => {
     }
 
     setStepError(null);
-    setStep(3)
-  }
+    setStep(3);
+  };
 
   return (
     <div className="relative flex flex-col justify-center items-center min-h-screen pt-20 pb-10 px-4 bg-[#080a08]">
@@ -232,7 +234,10 @@ const Calculator = () => {
                   } ${
                     selectedId === d.id ? "border-[#e8ff47]" : "border-white/10"
                   } hover:bg-card/60 border hover:cursor-pointer rounded-2xl transition-all`}
-                  onClick={() => {setSelectedId(d.id); setStepError(null)}}
+                  onClick={() => {
+                    setSelectedId(d.id);
+                    setStepError(null);
+                  }}
                 >
                   {d.id === "dts" ? (
                     <BarChart3 className="size-6 text-accent" />
@@ -295,7 +300,9 @@ const Calculator = () => {
                       onClick={() => toggleLevel(lvl.level)}
                     >
                       <span className="text-xs sm:text-sm">{lvl.level}L</span>
-                      <span className="text-xs sm:text-sm">{selectedLevels[lvl.level] ? "✓" : "+"}</span>
+                      <span className="text-xs sm:text-sm">
+                        {selectedLevels[lvl.level] ? "✓" : "+"}
+                      </span>
                     </button>
 
                     {selectedLevels[lvl.level] && (
@@ -318,7 +325,9 @@ const Calculator = () => {
                                 setStepError(null);
                               }}
                             >
-                              <span className="text-xs sm:text-sm">{sem.name}</span>
+                              <span className="text-xs sm:text-sm">
+                                {sem.name}
+                              </span>
                             </button>
                           );
                         })}
@@ -380,12 +389,13 @@ const Calculator = () => {
                         className="w-full flex flex-col sm:justify-between sm:px-4 py-4 sm:py-6 bg-white/5 border-white/10 rounded-xl"
                       >
                         <div className="w-full flex flex-col px-4 sm:px-2 sm:flex-row sm:justify-between sm:items-center">
-                          
                           <div className="flex flex-col">
                             <p className="text-xs sm:text-sm text-[#e8ff47] uppercase font-semibold">
                               {course.code}
                             </p>
-                            <h1 className="text-sm text-white/90">{course.title}</h1>
+                            <h1 className="text-sm text-white/90">
+                              {course.title}
+                            </h1>
                             <p className="text-[11px] text-white/50">
                               {course.credits} units
                             </p>
@@ -497,7 +507,9 @@ const Calculator = () => {
                         <p className="text-sm text-white font-medium">
                           {lvl}L — {semName}
                         </p>
-                        <p className="text-xs text-white/50 mt-1">GPA Performance</p>
+                        <p className="text-xs text-white/50 mt-1">
+                          GPA Performance
+                        </p>
                       </div>
 
                       <div className="text-right">
@@ -535,6 +547,15 @@ const Calculator = () => {
           </div>
         )}
       </div>
+
+      {step === 1 && (
+        <div className="flex gap-2 mt-4 text-sm text-white/60">
+          <p>
+            Don't see your course?
+          </p>
+          <a href="https://wa.me/2347056776830?text=Hello%20monaski.%20I%20would%20like%20to%20add%20my%20courses%20to%20the%20calculator" target="_blank" rel="noopener noreferrer" className="underline hover:text-[#e8ff47]">Message me</a>
+        </div>
+      )}
     </div>
   );
 };
