@@ -551,7 +551,16 @@ const Calculator = () => {
       {step === 1 && (
         <div className="flex gap-2 mt-4 text-sm text-white/60">
           <p>
-            Don't see your course?
+            Don't see your department?
+          </p>
+          <a href="https://wa.me/2347056776830?text=Hello%20monaski.%20I%20would%20like%20to%20add%20my%20courses%20to%20the%20calculator" target="_blank" rel="noopener noreferrer" className="underline hover:text-[#e8ff47]">Message me</a>
+        </div>
+      )}
+
+      {step === 2 && (
+        <div className="flex gap-2 mt-4 text-sm text-white/60">
+          <p>
+            Don't see your level?
           </p>
           <a href="https://wa.me/2347056776830?text=Hello%20monaski.%20I%20would%20like%20to%20add%20my%20courses%20to%20the%20calculator" target="_blank" rel="noopener noreferrer" className="underline hover:text-[#e8ff47]">Message me</a>
         </div>
